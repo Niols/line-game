@@ -18,6 +18,9 @@ export default class Game extends Phaser.Scene {
     }
 
     create() {
+        this.isPlayerA = false;
+        this.opponentCards = [];
+
         this.dealText = this.add.text(75, 350, ['DEAL CARDS']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
 
         let self = this;
@@ -73,13 +76,15 @@ export default class Game extends Phaser.Scene {
             gameObject.disableInteractive();
         })
 
-        console.log('Creating game...');
-
         this.socket = io('http://localhost:3000');
 
         this.socket.on('connect', function () {
             console.log('Connected!');
         });
+
+        this.socket.on('isPlayerA', function () {
+            self.isPlayerA = true;
+        })
     }
 
     update() {
