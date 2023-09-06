@@ -7,26 +7,24 @@ const io = new Server(server, {
 let players = [];
 
 io.on('connection', function (socket) {
-    console.log('User connected: ' + socket.id);
+  console.log('User connected: ' + socket.id);
 
-    players.push(socket.id);
+  let player = { id: socket.id, socketId: socket.id };
+  players.push(player);
+  socket.emit('welcome', player.id);
 
-    if (players.length === 1) {
-        io.emit('isPlayerA');
-    };
+  socket.on('dealCards', function () {
+    io.emit('dealCards');
+  });
 
-    socket.on('dealCards', function () {
-        io.emit('dealCards');
-    });
+  socket.on('cardPlayed', function (gameObject) {
+    io.emit('cardPlayed', gameObject, player.id);
+  });
 
-    socket.on('cardPlayed', function (gameObject, isPlayerA) {
-        io.emit('cardPlayed', gameObject, isPlayerA);
-    });
-
-    socket.on('disconnect', function () {
-        console.log('User disconnected: ' + socket.id);
-        players = players.filter(player => player !== socket.id);
-    });
+  socket.on('disconnect', function () {
+    console.log('User disconnected: ' + socket.id);
+    players = players.filter(player => player.socketId !== socket.id);
+  });
 });
 
 server.listen(3000, function () {
