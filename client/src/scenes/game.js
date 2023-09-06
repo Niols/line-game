@@ -1,3 +1,5 @@
+import io from 'socket.io-client';
+
 import Card from '../helpers/card';
 import Zone from '../helpers/zone';
 
@@ -70,6 +72,14 @@ export default class Game extends Phaser.Scene {
             gameObject.y = dropZone.y;
             gameObject.disableInteractive();
         })
+
+        console.log('Creating game...');
+
+        this.socket = io('http://localhost:3000');
+
+        this.socket.on('connect', function () {
+            console.log('Connected!');
+        });
     }
 
     update() {
