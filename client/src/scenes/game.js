@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 
 import Card from '../helpers/card';
+import Dealer from '../helpers/dealer';
 import Zone from '../helpers/zone';
 
 export default class Game extends Phaser.Scene {
@@ -28,15 +29,10 @@ export default class Game extends Phaser.Scene {
         this.card = this.add.image(300, 300, 'cyanCardFront').setScale(0.3, 0.3).setInteractive();
         this.input.setDraggable(this.card);
 
-        this.dealCards = () => {
-            for (let i = 0; i < 5; i++) {
-                let playerCard = new Card(this);
-                playerCard.render(475 + (i * 100), 650, 'cyanCardFront');
-            }
-        }
+        this.dealer = new Dealer(this);
 
         this.dealText.on('pointerdown', function () {
-            self.dealCards();
+            self.socket.emit("dealCards");
         })
 
         this.dealText.on('pointerover', function () {
@@ -84,6 +80,11 @@ export default class Game extends Phaser.Scene {
 
         this.socket.on('isPlayerA', function () {
             self.isPlayerA = true;
+        })
+
+        this.socket.on('dealCards', function () {
+            self.dealer.dealCards();
+            self.dealText.disableInteractive();
         })
     }
 
