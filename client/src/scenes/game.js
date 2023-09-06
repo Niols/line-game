@@ -14,6 +14,11 @@ export default class Game extends Phaser.Scene {
     preload() {
         this.load.image('card-back', 'src/assets/card-back.png');
         this.load.image('card-front-p', 'src/assets/card-front-p.png');
+        this.load.image('card-front-q', 'src/assets/card-front-q.png');
+        this.load.image('card-front-r', 'src/assets/card-front-r.png');
+        this.load.image('card-front-not', 'src/assets/card-front-not.png');
+        this.load.image('card-front-and', 'src/assets/card-front-and.png');
+        this.load.image('card-front-or', 'src/assets/card-front-or.png');
     }
 
     create() {
