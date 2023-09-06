@@ -12,6 +12,7 @@ export default class Game extends Phaser.Scene {
     }
 
     preload() {
+        this.load.image('card-back', 'src/assets/card-back.png');
         this.load.image('card-front-p', 'src/assets/card-front-p.png');
     }
 
@@ -87,7 +88,7 @@ export default class Game extends Phaser.Scene {
                 let sprite = gameObject.textureKey;
                 self.opponentCards.shift().destroy();
                 self.dropZone.data.values.cards++;
-                let card = new Card(self, 'card-front-p');
+                let card = new Card(self, 'card-front-p', 'card-back');
                 card.render(((self.dropZone.x - 350) + (self.dropZone.data.values.cards * 50)), (self.dropZone.y), true).disableInteractive();
             }
         })
